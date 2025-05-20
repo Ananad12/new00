@@ -1,5 +1,5 @@
 trigger:
-- main  # or your target branch
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -7,24 +7,21 @@ pool:
 steps:
 - checkout: self
 
-# ✅ Use Java 17
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '17'
-    jdkArchitecture: 'x64'
+    jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
-# ✅ Confirm Java version
 - script: |
     echo "JAVA_HOME=$JAVA_HOME"
     java -version
     mvn -version
-  displayName: 'Verify Java & Maven version'
+  displayName: 'Verify Java and Maven versions'
 
-# ✅ Run Maven build
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml'  # Adjust path if needed
+    mavenPomFile: 'pom.xml'
     goals: 'clean install'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
